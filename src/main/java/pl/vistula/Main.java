@@ -21,6 +21,13 @@ public class Main {
         out.println("Result from task 4: " + generatorLargestNumByFamily(456));
         out.println("Result from task 4: " + generatorLargestNumByFamily(6719));
         out.println("Result from task 4: " + generatorLargestNumByFamily(5960));
+        out.println();
+        out.println("Result from task 5: " + firstCharRecognition("Upper"));
+        out.println("Result from task 5: " + firstCharRecognition("lower"));
+        out.println("Result from task 5: " + firstCharRecognition("$%^pper"));
+        out.println("Result from task 5: " + firstCharRecognition(" "));
+        out.println("Result from task 5: " + firstCharRecognition(""));
+
     }
 
     public static StringBuilder generatorStrChar(int n) {
@@ -65,6 +72,24 @@ public class Main {
     public static void validateInput(int n) {
         if (n < 0 || n >= 10000) {
             throw new IllegalArgumentException("The parameter n must be between 0 ≤ n ≤ 10 000 .");
+        }
+    }
+
+    public static String firstCharRecognition(String str) {
+        validationStr(str);
+        char firstChar = str.charAt(0);
+
+        return switch (Character.getType(firstChar)) {
+            case Character.UPPERCASE_LETTER -> "upper";
+            case Character.LOWERCASE_LETTER -> "lower";
+            case Character.DECIMAL_DIGIT_NUMBER -> "digit";
+            default -> "other";
+        };
+    }
+
+    public static void validationStr(String str) {
+        if ("".equals(str)) {
+            throw new IllegalArgumentException("The value cannot be empty.");
         }
     }
 }
