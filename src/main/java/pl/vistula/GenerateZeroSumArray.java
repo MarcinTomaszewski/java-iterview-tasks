@@ -3,31 +3,43 @@ package pl.vistula;
 import java.util.*;
 
 public class GenerateZeroSumArray {
+    private final int[] result;
+    private final int n;
+    private final Set<Integer> usedNumbers = new HashSet<>();
+    private final Random random = new Random();
 
-    public static int[] generateUniqueZeroSum(int n) {
-        validateInput(n);
-
-        int[] result = new int[n];
-        Set<Integer> usedNumbers = new HashSet<>();
-        int sum = generateRandomNumbers(result, n, usedNumbers);
-
-        result[n - 1] = generateLastNumber(-sum, usedNumbers, n);
-
-        return result;
+    public GenerateZeroSumArray(int n) {
+        this.result = new int[n];
+        this.n = n;
+        generateUniqueZeroSum();
     }
 
-    private static void validateInput(int n) {
+    @Override
+    public String toString() {
+        return "GenerateZeroSumArray{" +
+                "result=" + Arrays.toString(result) +
+                '}';
+    }
+
+    public void generateUniqueZeroSum() {
+        validateInput(n);
+
+        int sum = generateRandomNumbers();
+
+        result[n - 1] = generateLastNumber(-sum);
+    }
+
+    private void validateInput(int n) {
         if (n < 1 || n > 100) {
             throw new IllegalArgumentException("The parameter n must be between 1 and 100.");
         }
     }
 
-    private static int generateRandomNumbers(int[] result, int n, Set<Integer> usedNumbers) {
-        Random random = new Random();
+    private int generateRandomNumbers() {
         int sum = 0;
 
         for (int i = 0; i < n - 1; i++) {
-            int number = generateUniqueRandomNumber(random, usedNumbers, n);
+            int number = generateUniqueRandomNumber();
             result[i] = number;
             usedNumbers.add(number);
             sum += number;
@@ -36,7 +48,7 @@ public class GenerateZeroSumArray {
         return sum;
     }
 
-    private static int generateUniqueRandomNumber(Random random, Set<Integer> usedNumbers, int n) {
+    private int generateUniqueRandomNumber() {
         int number;
         do {
             number = random.nextInt(2 * n + 1) - n;
@@ -44,8 +56,7 @@ public class GenerateZeroSumArray {
         return number;
     }
 
-    private static int generateLastNumber(int lastNumber, Set<Integer> usedNumbers, int n) {
-        Random random = new Random();
+    private int generateLastNumber(int lastNumber) {
         while (usedNumbers.contains(lastNumber)) {
             lastNumber = random.nextInt(2 * n + 1) - n;
         }
